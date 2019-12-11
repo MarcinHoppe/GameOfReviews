@@ -4,14 +4,14 @@ namespace Reviews.Models
 {
     public class Review
     {
-        public Review(string comment, string author)
+        public Review(string text, string author)
         {
-            Comment = comment;
+            Text = text;
             Author = author;
         }
 
         public string Id = Guid.NewGuid().ToString();
-        public string Comment { get; }
+        public string Text { get; }
         public string Author { get; }
     }
 }

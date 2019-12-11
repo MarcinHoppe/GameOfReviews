@@ -18,7 +18,7 @@ namespace Reviews.Controllers
             return View(ProductDatabase.AllProducts());
         }
 
-        public IActionResult Comments(string id)
+        public IActionResult Reviews(string id)
         {
             logger.LogInformation("Searching for product {0}", id);
             
@@ -36,7 +36,7 @@ namespace Reviews.Controllers
         [HttpPost]
         public IActionResult Remove(string id, [FromForm] string reviewId)
         {
-            logger.LogInformation("Removing comment {0} from product {1}", reviewId, id);
+            logger.LogInformation("Removing review {0} from product {1}", reviewId, id);
             
             var product = ProductDatabase.FindProduct(id);
             if (product == null)
@@ -45,14 +45,14 @@ namespace Reviews.Controllers
                 return NotFound();
             }
 
-            var removed = product.RemoveComment(reviewId);
-            logger.LogInformation("Successfully removed comment {0} from product {1}: {2}", id, reviewId, removed);
+            var removed = product.RemoveReview(reviewId);
+            logger.LogInformation("Successfully removed review {0} from product {1}: {2}", id, reviewId, removed);
 
-            return RedirectToAction("Comments", new { id = id });
+            return RedirectToAction("Reviews", new { id = id });
         }
 
         [HttpPost]
-        public IActionResult Add(string id, [FromForm] string comment)
+        public IActionResult Add(string id, [FromForm] string review)
         {
             logger.LogInformation("Adding review from user {0} from product {1}", User.Identity.Name, id);
             
@@ -63,10 +63,10 @@ namespace Reviews.Controllers
                 return NotFound();
             }
 
-            product.AddReview(comment, User.Identity.Name);
-            logger.LogInformation("Successfully added comment `{0}` from user {1} to product {2}", comment, User.Identity.Name, id);
+            product.AddReview(review, User.Identity.Name);
+            logger.LogInformation("Successfully added review `{0}` from user {1} to product {2}", review, User.Identity.Name, id);
 
-            return RedirectToAction("Comments", new { id = id });
+            return RedirectToAction("Reviews", new { id = id });
         }
     }
 }

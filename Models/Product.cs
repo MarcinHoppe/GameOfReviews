@@ -14,12 +14,12 @@ namespace Reviews.Models
 
         public string Name { get; }
 
-        public void AddReview(string comment, string author)
+        public void AddReview(string review, string author)
         {
-            reviews.Add(new Review(comment, author));
+            reviews.Add(new Review(review, author));
         }
 
-        public bool RemoveComment(string reviewId)
+        public bool RemoveReview(string reviewId)
         {
             return reviews.Remove(reviews.Find(review => review.Id == reviewId));
         }
