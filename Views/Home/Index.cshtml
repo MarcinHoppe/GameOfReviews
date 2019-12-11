@@ -1,7 +1,30 @@
-﻿@{
+﻿@model IEnumerable<Product>
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Game of Reviews</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Reviews</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td class="text-left">
+                        @product.Name
+                    </td>
+                    <td>
+                        <a asp-action="Comments" asp-route-id="@product.Id">View @product.ReviewCount comment(s)</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

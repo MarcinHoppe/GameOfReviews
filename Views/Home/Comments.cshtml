@@ -1,0 +1,51 @@
+@model Product
+@{
+    ViewData["Title"] = "Comments";
+}
+
+<div class="text-center">
+    <h1 class="display-3">@Model.Name</h1>
+
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Comment</th>
+                <th scope="col">Author</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model.AllReviews())
+            {
+                <tr>
+                    <td class="text-left">
+                        @review.Comment
+                    </td>
+                    <td class="text-left">
+                        @review.Author
+                    </td>
+                    <td>
+                        <form asp-action="Remove" method="post" asp-route-id="@Model.Id">
+                            <input type="hidden" name="reviewId" value="@review.Id"/>
+                            <div class="form-group">
+                                <input type="submit" value="Remove!" class="btn btn-primary" />
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <form asp-action="Add" method="post" asp-route-id="@Model.Id">
+        <div class="form-group">
+            <textarea class="form-control" rows="3" name="comment"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Add!" class="btn btn-primary" />
+        </div>
+    </form>
+}
