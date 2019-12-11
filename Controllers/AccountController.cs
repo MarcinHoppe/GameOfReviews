@@ -7,11 +7,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Reviews.Controllers
 {
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
-        private readonly ILogger<LoginController> logger;
+        private readonly ILogger<AccountController> logger;
 
-        public LoginController(ILogger<LoginController> logger)
+        public AccountController(ILogger<AccountController> logger)
         {
             this.logger = logger;
         }

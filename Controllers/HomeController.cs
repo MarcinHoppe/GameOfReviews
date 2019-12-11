@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Reviews.Models;
 
@@ -13,11 +14,13 @@ namespace Reviews.Controllers
             this.logger = logger;
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View(ProductDatabase.AllProducts());
         }
 
+        [AllowAnonymous]
         public IActionResult Reviews(string id)
         {
             logger.LogInformation("Searching for product {0}", id);
@@ -33,6 +36,14 @@ namespace Reviews.Controllers
             return View(product);
         }
 
+        [Authorize]
+        [HttpGet]
+        public IActionResult Remove(string id)
+        {
+            return RedirectToAction("Reviews", new { id = id });
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult Remove(string id, [FromForm] string reviewId)
         {
@@ -51,6 +62,7 @@ namespace Reviews.Controllers
             return RedirectToAction("Reviews", new { id = id });
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Add(string id, [FromForm] string review)
         {

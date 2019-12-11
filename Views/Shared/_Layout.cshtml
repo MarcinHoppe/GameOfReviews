@@ -28,13 +28,13 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a id="qsLogoutBtn" class="nav-link text-dark" asp-controller="Login" asp-action="Logout">Logout</a>
+                        <a id="qsLogoutBtn" class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
                     </li>
                 }
                 else
                 {
                     <li class="nav-item">
-                        <a id="qsLoginBtn" class="nav-link text-dark" asp-controller="Login" asp-action="Login">Login</a>
+                        <a id="qsLoginBtn" class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
                     </li>
                 }
             </ul>
