@@ -1,8 +1,13 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using System.Threading.Tasks;
+using System;
 
 namespace Reviews
 {
@@ -18,13 +23,61 @@ namespace Reviews
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.Configure<CookiePolicyOptions>(options => {
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = 
+                    options.DefaultChallengeScheme = 
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddOpenIdConnect("Auth0", options => {
+                options.Authority = $"https://{Configuration["Auth0:DOMAIN"]}";
+                options.ClientId = Configuration["Auth0:CLIENT_ID"];
+                options.ClientSecret = Configuration["Auth0:CLIENT_SECRET"];
+                options.ResponseType = OpenIdConnectResponseType.Code;
+                options.CallbackPath = new PathString("/callback");
+                options.ClaimsIssuer = "Auth0";
+
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnRedirectToIdentityProviderForSignOut = Logout
+                };
+            });
         }
 
+        private Task Logout(RedirectContext context)
+        {
+            var logoutUri = $"https://{Configuration["Auth0:DOMAIN"]}/v2/logout?client_id={Configuration["Auth0:CLIENT_ID"]}";
+            var postLogoutUri = context.Properties.RedirectUri;
+            if (!string.IsNullOrEmpty(postLogoutUri))
+            {
+                if (postLogoutUri.StartsWith("/"))
+                {
+                    // transform to absolute
+                    var request = context.Request;
+                    postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
+                }
+                logoutUri += $"&returnTo={Uri.EscapeDataString(postLogoutUri)}";
+            }
+
+            context.Response.Redirect(logoutUri);
+            context.HandleResponse();
+            return Task.CompletedTask;
+        }
+    
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
