@@ -5,11 +5,11 @@ using Reviews.Models;
 
 namespace Reviews.Controllers
 {
-    public class HomeController : Controller
+    public class ProductsController : Controller
     {
-        private readonly ILogger<HomeController> logger;
+        private readonly ILogger<ProductsController> logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public ProductsController(ILogger<ProductsController> logger)
         {
             this.logger = logger;
         }

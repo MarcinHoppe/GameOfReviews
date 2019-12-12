@@ -26,7 +26,7 @@ namespace Reviews.Controllers
         public async Task Logout()
         {
             logger.LogInformation("Logout");
-            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties { RedirectUri = Url.Action("Index", "Home") });
+            await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties { RedirectUri = Url.Action("Index", "Products") });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
