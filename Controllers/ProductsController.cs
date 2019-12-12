@@ -20,6 +20,13 @@ namespace Reviews.Controllers
             return View(ProductDatabase.AllProducts());
         }
 
+        [HttpGet]
+        public IActionResult Add()
+        {
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Policy = "EmployeeOnly")]
         [HttpPost]
         public IActionResult Add([FromForm] string productName)
         {

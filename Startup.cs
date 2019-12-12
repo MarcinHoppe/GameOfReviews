@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reviews
 {
@@ -90,6 +91,14 @@ namespace Reviews
 
         private void ConfigureAuthorization(IServiceCollection services)
         {
+            services.AddAuthorization(options => {
+                options.AddPolicy("EmployeeOnly", EmployeeOnlyPolicy);
+            });
+        }
+
+        public void EmployeeOnlyPolicy(AuthorizationPolicyBuilder policy)
+        {
+            policy.RequireClaim("https://gameofreviews.com/role", "Employee");
         }
     
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
