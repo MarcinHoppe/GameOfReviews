@@ -24,26 +24,34 @@ namespace Reviews
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            ConfigureAuthentication(services);
+            ConfigureAuthorization(services);
+        }
 
-            services.Configure<CookiePolicyOptions>(options => {
+        private void ConfigureAuthentication(IServiceCollection services)
+        {
+            services.Configure<CookiePolicyOptions>(options =>
+            {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAuthentication(options => {
-                options.DefaultAuthenticateScheme = 
-                    options.DefaultChallengeScheme = 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme =
+                    options.DefaultChallengeScheme =
                     options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
             .AddCookie()
-            .AddOpenIdConnect("Auth0", options => {
+            .AddOpenIdConnect("Auth0", options =>
+            {
                 options.Authority = $"https://{Configuration["Auth0:DOMAIN"]}";
                 options.ClientId = Configuration["Auth0:CLIENT_ID"];
                 options.ClientSecret = Configuration["Auth0:CLIENT_SECRET"];
                 options.ResponseType = OpenIdConnectResponseType.Code;
                 options.CallbackPath = new PathString("/callback");
                 options.ClaimsIssuer = "Auth0";
-                
+
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
                 options.Scope.Add("email");
@@ -78,6 +86,10 @@ namespace Reviews
             context.Response.Redirect(logoutUri);
             context.HandleResponse();
             return Task.CompletedTask;
+        }
+
+        private void ConfigureAuthorization(IServiceCollection services)
+        {
         }
     
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
