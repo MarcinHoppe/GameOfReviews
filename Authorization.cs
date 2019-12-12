@@ -2,9 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 using Reviews.Models;
-using Reviews.Controllers;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using Reviews.Utils;
 
