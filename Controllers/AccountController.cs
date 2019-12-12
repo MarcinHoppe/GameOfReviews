@@ -29,5 +29,10 @@ namespace Reviews.Controllers
             await HttpContext.SignOutAsync("Auth0", new AuthenticationProperties { RedirectUri = Url.Action("Index", "Home") });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

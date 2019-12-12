@@ -49,7 +49,8 @@ namespace Reviews
                 options.Scope.Add("email");
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    NameClaimType = "name"
+                    NameClaimType = "name",
+                    RoleClaimType = "https://gameofreviews.com/role"
                 };
 
                 options.Events = new OpenIdConnectEvents

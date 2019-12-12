@@ -43,7 +43,7 @@ namespace Reviews.Controllers
             return RedirectToAction("Reviews", new { id = id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Employee")]
         [HttpPost]
         public IActionResult Remove(string id, [FromForm] string reviewId)
         {
@@ -62,7 +62,7 @@ namespace Reviews.Controllers
             return RedirectToAction("Reviews", new { id = id });
         }
 
-        [Authorize]
+        [Authorize(Roles = "Employee, User")]
         [HttpPost]
         public IActionResult Add(string id, [FromForm] string review)
         {
