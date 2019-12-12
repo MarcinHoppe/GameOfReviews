@@ -37,7 +37,7 @@ namespace Reviews.Controllers
             return RedirectToAction("Index", new { id = id });
         }
 
-        [Authorize(Roles = "Employee")]
+        [Authorize(Policy = "ReviewRemovalPolicy")]
         [HttpPost]
         public IActionResult Remove(string id, [FromForm] string reviewId)
         {

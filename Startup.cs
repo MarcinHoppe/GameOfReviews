@@ -17,6 +17,7 @@ namespace Reviews
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHttpContextAccessor();
             services.ConfigureAuthentication(Configuration);
             services.ConfigureAuthorization();
         }

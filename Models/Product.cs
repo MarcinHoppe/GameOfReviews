@@ -24,6 +24,11 @@ namespace Reviews.Models
             return reviews.Remove(reviews.Find(review => review.Id == reviewId));
         }
 
+        public Review FindReview(string reviewId)
+        {
+            return reviews.Find(review => review.Id == reviewId);
+        }
+
         public int ReviewCount
         {
             get { return reviews.Count; }
