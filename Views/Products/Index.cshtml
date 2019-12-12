@@ -21,7 +21,7 @@
                         @product.Name
                     </td>
                     <td>
-                        <a asp-action="Reviews" asp-route-id="@product.Id">View @product.ReviewCount review(s)</a>
+                        <a asp-controller="Reviews" asp-action="Index" asp-route-id="@product.Id">View @product.ReviewCount review(s)</a>
                     </td>
                 </tr>
             }
