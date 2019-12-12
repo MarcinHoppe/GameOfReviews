@@ -19,5 +19,13 @@ namespace Reviews.Controllers
         {
             return View(ProductDatabase.AllProducts());
         }
+
+        [HttpPost]
+        public IActionResult Add([FromForm] string productName)
+        {
+            logger.LogInformation("Adding product {0}", productName);
+            ProductDatabase.AddProduct(productName);
+            return RedirectToAction("Index");
+        }
     }
 }
