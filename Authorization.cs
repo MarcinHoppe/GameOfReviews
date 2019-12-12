@@ -15,9 +15,11 @@ namespace Reviews
             services.AddAuthorization(options => {
                 options.AddPolicy("EmployeeOnly", policy => policy.RequireClaim("https://gameofreviews.com/role", "Employee"));
                 options.AddPolicy("ReviewRemovalPolicy", policy => policy.Requirements.Add(new RemoveReviewPermission()));
+                options.AddPolicy("ProductRemovalPolicy", policy => policy.Requirements.Add(new RemoveProductPermission()));
             });
 
             services.AddSingleton<IAuthorizationHandler, RemoveReviewPolicy>();
+            services.AddSingleton<IAuthorizationHandler, RemoveProductPolicy>();
         }
     }
 

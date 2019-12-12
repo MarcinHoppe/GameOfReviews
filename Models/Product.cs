@@ -5,14 +5,16 @@ namespace Reviews.Models
 {
     public class Product
     {
-        public Product(string name)
+        public Product(string name, string owner)
         {
             Name = name;
+            Owner = owner;
         }
 
         public string Id = Guid.NewGuid().ToString();
 
         public string Name { get; }
+        public string Owner { get; }
 
         public void AddReview(string review, string author)
         {

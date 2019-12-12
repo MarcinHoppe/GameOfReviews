@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Reviews";
 }
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
 
 <div class="text-center">
     <h1 class="display-3">@Model.Name</h1>
@@ -37,6 +39,12 @@
         </tbody>
     </table>
 </div>
+
+<form asp-controller="Products" asp-action="Remove" method="post" asp-route-id="@Model.Id">
+    <div class="form-group">
+        <input type="submit" value="Remove!" class="btn btn-primary" />
+    </div>
+</form>
 
 @if (User.Identity.IsAuthenticated)
 {
